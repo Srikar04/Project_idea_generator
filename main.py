@@ -1,6 +1,6 @@
 import streamlit as st
 from dotenv import load_dotenv
-from agent import get_project_ideas
+from agent import get_project_ideas,get_trending_technologies
 
 load_dotenv()
 
@@ -17,7 +17,10 @@ def project_idea_generator():
 
 def trending_technologies():
     st.title("Trending Technologies")
-    st.write("Search for trending technologies and view graphs.")
+    st.write("Here are the top 5 trending technologies and languages currently being used by computer scientists.")
+    with st.spinner("Fetching data..."):
+        info = get_trending_technologies()
+    st.write(info)
 
 if "page" not in st.session_state:
     st.session_state.page = "Trending Technologies"
@@ -28,6 +31,7 @@ if st.sidebar.button("Trending Technologies"):
 if st.sidebar.button("Project Idea Generator"):
     st.session_state.page = "Project Idea Generator"
 
+st.write("Note: The results are generated using the GROQ model and may vary from request to another. They may also take to load")
 # Page selection
 if st.session_state.page == "Project Idea Generator":
     project_idea_generator()

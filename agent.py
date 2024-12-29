@@ -2,6 +2,7 @@ from phi.agent import Agent
 from phi.tools.github import GithubTools
 from phi.model.groq import Groq
 from dotenv import load_dotenv
+from phi.tools.wikipedia import WikipediaTools
 import os
 
 load_dotenv()
@@ -40,4 +41,31 @@ def get_project_ideas(technologies, level):
         "Project ideas using {} for {} level".format(technologies, level)
     )
     
+    return response.content
+
+def get_trending_technologies():
+    api_key = os.getenv("GROQ_API_KEY")
+    github_token = os.getenv("GITHUB_ACCESS_TOKEN")
+
+    if not api_key:
+        raise ValueError("GROQ_API_KEY not found in environment variables")
+    if not github_token:
+        raise ValueError("GITHUB_ACCESS_TOKEN not found in environment variables")
+
+    wiki_agent = Agent(
+        model=Groq(id="llama-3.3-70b-versatile"),
+        instructions=[
+            "Your goal is to find trending technologies from finding information on internet.",
+            "You can use wikipedia tool to get the information."
+            "Return the response in a concise and clean manner."
+            "Give tables for the top 5 trending technologies and top 5 trending languages along with statitics in markdown.",
+            "Also can you the provide the articles from which you got the information."
+        ],
+        tools=[WikipediaTools()],
+        markdown=True
+    )
+    try:
+        response = wiki_agent.run()
+    except Exception as e:
+        return "Error: " + str(e)
     return response.content
