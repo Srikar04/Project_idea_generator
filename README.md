@@ -7,6 +7,11 @@ This project is a **Generative AI** web application that provides project ideas 
 - **Project Idea Suggester**: Enter your preferred technologies and skill level to get project ideas.
 - **Trending Technologies**: View the top 5 trending technologies and languages currently being used by computer scientists.
 
+## Screenshots
+
+![](/images/1.png)
+![](/images/2.png)
+
 ## Technologies Used
 
 - **Streamlit**: For building the web application.
